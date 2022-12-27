@@ -7,5 +7,17 @@
 
 
 {% block content %}
-<h1>Login</h1>
+<h1>Bienvenido</h1>
+<h2>Ponga su usario y contraseña</h2>
+<form action="{% url 'login' %}" method="post"> {% csrf_token %}
+
+    <table>
+    
+        {{ form.as_table }}
+    
+    </table>
+    
+    <input type="submit" value="LISTO">
+    
+    </form>
 {% endblock %}

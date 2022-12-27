@@ -8,4 +8,9 @@ class SignupForm(forms.Form):
     contra=forms.CharField(label="contraseña", widget=forms.PasswordInput, strip=False)
     confirmar=forms.CharField(label="confirmar", widget=forms.PasswordInput, strip=False)
 
+class LoginForm(forms.Form):
+    mail=forms.CharField(max_length=50)
+    contra=forms.CharField(label="contraseña", widget=forms.PasswordInput, strip=False)
+
+
 
