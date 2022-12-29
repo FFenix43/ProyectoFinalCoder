@@ -7,9 +7,9 @@
 
 
 {% block content %}
-<h1>Rellena el formulario</h1>
+<h1>Edicion de Usuario {{ nombreusuario }}</h1>
 
-<form action="{% url 'signup' %}" method="post"> {% csrf_token %}
+<form action="{% url 'editarPerfil' %}" method="post"> {% csrf_token %}
 
 <table>
 
@@ -17,8 +17,9 @@
 
 </table>
 
-<input type="submit" value="LISTO">
+<input type="submit" value="Editar Usuario">
 
 </form>
+{{ mensaje }}
 
 {% endblock %}
