@@ -3,8 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
 
-class BlogsForm(forms.Form):
-    imagen=forms.ImageField()
+
 
 class CreacionUsario(UserCreationForm):
     email = forms.EmailField()
@@ -30,4 +29,10 @@ class EditorDeUsuario(UserCreationForm):
 
 class AvatarForm(forms.Form):
     imagen=forms.ImageField(label="imagen")
+
+
+class CreacionBlogs(forms.Form):
+    nombre_personaje=forms.CharField(max_length=20)
+    imagen=forms.ImageField(label="imagen")
+    parrafo=forms.TextInput()
 

@@ -4,21 +4,22 @@ from django.contrib.auth.models import User
 
 class blogs(models.Model):
     
-    nombre=models.CharField(max_length=50)
-    apellido=models.CharField(max_length=50)
-    gmail=models.EmailField()
-    contraseña=models.CharField(max_length=8)
+    nombre_del_personaje=models.CharField(max_length=50)
+    imagen=models.ImageField(upload_to='avatares', default='C:\TOMAS AGOSTINO ALVARENGA\CODER-HOUSE\ProyectoFinal\media\avatares\avatarDefault.jpg')
+    parrafo=models.TextField(max_length=5000, default=None)
+    
 
    
 
     def __str__(self) -> str:
-        return self.nombre+" "+self.apellido+" "+self.gmail+" "+self.contraseña
+        return f"{self.nombre_del_personaje} - {self.imagen} - {self.parrafo}"
 
 
 class Avatar(models.Model):
     imagen=models.ImageField(upload_to='avatares')
     user=models.ForeignKey(User, on_delete=models.CASCADE)
 
-    
+
     def __str__(self) -> str:
         return f"{self.user} - {self.imagen}"
+

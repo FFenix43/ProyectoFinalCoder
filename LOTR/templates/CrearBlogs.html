@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+<h1>Home</h1>
+{% endblock %}
+
+
+{% block content %}
+<h1>Creacion de Blog</h1>
+
+<form action="{% url 'crearBlogs' %}" method="POST" enctype="multipart/form-data"> {% csrf_token %}
+
+    <table>
+
+        {{ form.as_table }}
+
+    </table>
+
+    <input type="submit" value="CREAR BLOG">
+
+</form> 
+
+
+{{ mensaje }}
+{% endblock %}

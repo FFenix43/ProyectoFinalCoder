@@ -2,7 +2,7 @@ from django.shortcuts import render
 #from .models import 
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
-from LOTR.forms import BlogsForm, CreacionUsario, EditorDeUsuario
+from LOTR.forms import  CreacionUsario, EditorDeUsuario, AvatarForm, CreacionBlogs
 from LOTR.models import blogs, Avatar
 from django.contrib.auth.mixins import LoginRequiredMixin #para vistas basadas en clases
 from django.contrib.auth.decorators import login_required #para vistas basadas en vistas
@@ -28,7 +28,7 @@ def login_request(request):
             return render(request, "Registro/login.html", {"mensaje":"Usuario o contraseña incorrecta", "form":form})
     else:
         form = AuthenticationForm()
-        return render(request, "Registro/login.html", {"form": form})
+    return render(request, "Registro/login.html", {"form": form})
 
 def signup_request(request):
     if request.method == "POST":
@@ -77,6 +77,7 @@ def editarPerfil(request):
 @login_required
 def AboutMe(request):
     return render(request, "aboutme.html")
+
 @login_required
 def home(request):
     nombre=request.user
@@ -91,8 +92,47 @@ def home(request):
 
 @login_required
 def CrearBlog(request):
-    return HttpResponse("holamundo")
+    if request.method=="POST":
+    #agregar Biografia del personaje
+        form=CreacionBlogs(request.POST, request.FILES)
+        if form.is_valid():
+            informacion=form.cleaned_data
+            miblog= blogs (nombre_del_personaje=informacion['nombre_del_personaje'], imagen=request.FILES["imagen"], parrafo=informacion['parrafo'])
+            miblog.save()
+            return render(request, "blog.html", {"mensaje":"Blog creado correctamente"})
+        else:
+            return render(request, "CrearBlogs.html", {"form":form})
+    else:
+        form = CreacionBlogs()
+        return render(request, "CrearBlogs.html")
+
+
+    #agregar-imagen
+    
+        #form = AvatarForm(request.POST, request.FILES)
+        #if form.is_valid():
+            #para edicion 
+            #avatarViejo=Avatar.objectsfilter(user=request.user)
+            #if len(avatarViejo)>0;
+                #avatarViejo[0].delete()
+            #avatar=Avatar(user=request.user,  imagen=request.FILES["imagen"])
+            #blog.save()
+           # return render(request, "blog.html", {"mensaje":"Blog creado correctamente"}) #agregar al return "imagen":obtenerAvatar(request)
+       
 
 @login_required  
 def BuscarBlogs(request):
     return render(request, "BuscarBlogs")
+
+@login_required
+def Blogs(request):
+    todosBlogs=blogs.objects.get()
+    return render(request, "blog.html", {"blogs":todosBlogs})
+    
+def obtenerAvatar(request):
+    lista=Avatar.objects.filter(user=request.user)
+    if len(lista)!=0:
+        imagen=lista[0].imagen.url
+    else:
+        imagen="/media/avatares/avatarDefault.jpg"
+    return imagen
