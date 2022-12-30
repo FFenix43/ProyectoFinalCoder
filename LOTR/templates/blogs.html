@@ -8,13 +8,17 @@
 
 {% block content %}
 <h2>Blogs</h2>
+{% if object_list %}
+    {% for blog in object_list %}
+        <li>{{ blog.nombre_del_personaje }}</li>
 
-{% for blog in blogs %}
-<li>{{ blog.nombre_del_personaje }}</li>
-
-<a class="btn btn-danger" href="">Borrar</a>
-<a class="btn btn-success" href="">Editar</a>
-{% endfor %}
+        <a class="btn btn-danger" href="">Borrar</a>
+        <a class="btn btn-success" href="">Editar</a>
+        <a class="btn" href="{% url 'VerBlogs' blog.id%}">Ver</a>
+    {% endfor %}
+{% else %}
+        <h1>Aun no hay blogs disponibles</h1>
+{% endif %}
 
 {{ mensaje }}
 {% endblock %}

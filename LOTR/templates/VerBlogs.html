@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+<h1>BLOGS</h1>
+{% endblock %}
+
+
+{% block content %}
+<h2>{{ blog.nombre_del_personaje }}</h2>
+
+<img src="{{ imagen }}" alt=""> 
+
+<h3>{{ blog.parrafo }}</h3>
+
+{{ mensaje }}
+{% endblock %}

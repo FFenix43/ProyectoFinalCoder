@@ -9,9 +9,10 @@ urlpatterns = [
     path('signup/', signup_request, name= "signup"),
     path('logout/', LogoutView.as_view(), name="logout"),
     #path('indice/', indice, name= "indice"),
-    path('blogs/', blogs, name= "blogs"),
+    path('blogs/', BlogsList.as_view(), name= "blogs"),
     path('buscarBlogs', BuscarBlogs, name="buscarBlogs"),
     path('crearBlogs/', CrearBlog, name="crearBlogs"),
+    path('verblogs/<id>', VerBlogs, name="VerBlogs"),
     path('editarPerfil/', editarPerfil, name="editarPerfil"),
     path('login/', login_request, name="login"),
 ]

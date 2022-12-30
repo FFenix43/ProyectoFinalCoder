@@ -31,8 +31,8 @@ class AvatarForm(forms.Form):
     imagen=forms.ImageField(label="imagen")
 
 
-class CreacionBlogs(forms.Form):
+class FormsCrearBlogs(forms.Form):
     nombre_personaje=forms.CharField(max_length=20)
     imagen=forms.ImageField(label="imagen")
-    parrafo=forms.TextInput()
+    parrafo=forms.CharField(widget=forms.Textarea)
 

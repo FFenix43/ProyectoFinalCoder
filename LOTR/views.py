@@ -2,13 +2,13 @@ from django.shortcuts import render
 #from .models import 
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
-from LOTR.forms import  CreacionUsario, EditorDeUsuario, AvatarForm, CreacionBlogs
+from LOTR.forms import *
 from LOTR.models import blogs, Avatar
 from django.contrib.auth.mixins import LoginRequiredMixin #para vistas basadas en clases
 from django.contrib.auth.decorators import login_required #para vistas basadas en vistas
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login, logout, authenticate
-
+from django.views.generic import ListView
 # Create your views here.
 
 def login_request(request):
@@ -90,45 +90,29 @@ def home(request):
 
     return render(request, "home.html", {"imagen":imagen, "nombre":Nombre})
 
+    #--seccion de blogs--
+
 @login_required
 def CrearBlog(request):
     if request.method=="POST":
-    #agregar Biografia del personaje
-        form=CreacionBlogs(request.POST, request.FILES)
+        form=FormsCrearBlogs(request.POST, request.FILES)
         if form.is_valid():
             informacion=form.cleaned_data
-            miblog= blogs (nombre_del_personaje=informacion['nombre_del_personaje'], imagen=request.FILES["imagen"], parrafo=informacion['parrafo'])
-            miblog.save()
-            return render(request, "blog.html", {"mensaje":"Blog creado correctamente"})
-        else:
-            return render(request, "CrearBlogs.html", {"form":form})
+            blog= blogs(nombre_del_personaje=informacion["nombre_personaje"], imagen=request.FILES["imagen"], parrafo=informacion["parrafo"])
+            blog.save()
+            return render (request, "blogs.html", {"mensaje": "BLOG CREADO CORRECTAMENTE!!"})
     else:
-        form = CreacionBlogs()
-        return render(request, "CrearBlogs.html")
+        formulario=FormsCrearBlogs()
 
 
-    #agregar-imagen
-    
-        #form = AvatarForm(request.POST, request.FILES)
-        #if form.is_valid():
-            #para edicion 
-            #avatarViejo=Avatar.objectsfilter(user=request.user)
-            #if len(avatarViejo)>0;
-                #avatarViejo[0].delete()
-            #avatar=Avatar(user=request.user,  imagen=request.FILES["imagen"])
-            #blog.save()
-           # return render(request, "blog.html", {"mensaje":"Blog creado correctamente"}) #agregar al return "imagen":obtenerAvatar(request)
+    return render (request, "CrearBlogs.html", {"form":form})
        
 
 @login_required  
 def BuscarBlogs(request):
     return render(request, "BuscarBlogs")
 
-@login_required
-def Blogs(request):
-    todosBlogs=blogs.objects.get()
-    return render(request, "blog.html", {"blogs":todosBlogs})
-    
+
 def obtenerAvatar(request):
     lista=Avatar.objects.filter(user=request.user)
     if len(lista)!=0:
@@ -136,3 +120,23 @@ def obtenerAvatar(request):
     else:
         imagen="/media/avatares/avatarDefault.jpg"
     return imagen
+
+class BlogsList(LoginRequiredMixin, ListView):
+    model = blogs
+    template_name = "blogs.html"
+
+@login_required
+def VerBlogs(request, id):
+    blog=blogs.objects.get(id=id)
+    if request.method=="POST":
+        form=FormsCrearBlogs(request.POST)
+        informacion=form.cleaned_data
+        imagen=informacion["imagen"]
+    
+
+    
+    
+    return render(request, "VerBlogs.html", {"blog":blog, "imagen":imagen})
+
+
+    
