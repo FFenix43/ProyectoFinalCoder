@@ -124,7 +124,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_URL='/LOTR/home/'
+LOGIN_URL='/LOTR/login/'
 
 LOGOUT_REDIRECT_UR='/LOTR/login/'
 

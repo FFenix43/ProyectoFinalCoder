@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 class blogs(models.Model):
     
     nombre_del_personaje=models.CharField(max_length=50)
-    imagen=models.ImageField(upload_to='avatares', default='C:\TOMAS AGOSTINO ALVARENGA\CODER-HOUSE\ProyectoFinal\media\avatares\avatarDefault.jpg')
+    imagen=models.ImageField(upload_to='Fotos-Blogs', default='C:\TOMAS AGOSTINO ALVARENGA\CODER-HOUSE\ProyectoFinal\media\avatares\avatarDefault.jpg')
     parrafo=models.TextField(max_length=5000, default=None)
     
 
@@ -23,3 +23,9 @@ class Avatar(models.Model):
     def __str__(self) -> str:
         return f"{self.user} - {self.imagen}"
 
+
+class Mensajes(models.Model):
+    mensaje=models.TextField()
+    
+    def __str__(self) -> str:
+        return f"{self.mensaje}"

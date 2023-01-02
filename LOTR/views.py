@@ -1,14 +1,15 @@
 from django.shortcuts import render
 #from .models import 
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from LOTR.forms import *
 from LOTR.models import blogs, Avatar
 from django.contrib.auth.mixins import LoginRequiredMixin #para vistas basadas en clases
 from django.contrib.auth.decorators import login_required #para vistas basadas en vistas
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.views.generic import ListView
+from django.contrib.auth.models import AnonymousUser
 # Create your views here.
 
 def login_request(request):
@@ -39,7 +40,7 @@ def signup_request(request):
             user=form.cleaned_data.get("username")
             form.save()
             usuario=authenticate(username=user, password=clave)
-            login(request, usuario)
+            #login(request, usuario)
             return render(request, "home.html", {"mensaje": f"Usuario {user} creado correctamente"})
         else:
             return render(request, "Registro/signup.html", {"mensaje": "Error al crear el usuario", "form": form })
@@ -102,7 +103,7 @@ def CrearBlog(request):
             blog.save()
             return render (request, "blogs.html", {"mensaje": "BLOG CREADO CORRECTAMENTE!!"})
     else:
-        formulario=FormsCrearBlogs()
+        form=FormsCrearBlogs()
 
 
     return render (request, "CrearBlogs.html", {"form":form})
@@ -112,14 +113,28 @@ def CrearBlog(request):
 def BuscarBlogs(request):
     return render(request, "BuscarBlogs")
 
-
+@login_required
 def obtenerAvatar(request):
-    lista=Avatar.objects.filter(user=request.user)
-    if len(lista)!=0:
-        imagen=lista[0].imagen.url
+    if request.method=="POST":
+        form=AvatarForm(request.POST, request.FILES)#ademas del post, como trae archivos (yo se que trae archivos xq conozco el form, tengo q usar request.files)
+        if form.is_valid():
+            avatarViejo=Avatar.objects.filter(user=request.user)
+            if len(avatarViejo)!=0:
+                avatarViejo[0].delete()
+            avatar=Avatar(user=request.user, imagen=request.FILES["imagen"])
+            avatar.save()
+            return render(request, "C:/TOMAS AGOSTINO ALVARENGA/CODER-HOUSE/ProyectoFinal/LOTR/templates/home.html", {"mensaje":"Avatar agregado correctamente"})
+        else:
+            return render(request, "AgregarAvatar.html", {"formulario": form, "usuario": request.user})
     else:
-        imagen="/media/avatares/avatarDefault.jpg"
-    return imagen
+        form=AvatarForm()
+        return render(request , "AgregarAvatar.html", {"formulario": form, "usuario": request.user})
+    #lista=Avatar.objects.filter(user=request.user)
+    #if len(lista)!=0:
+        #imagen=lista[0].imagen.url
+    #else:
+        #imagen="/media/avatares/avatarDefault.jpg"
+    #return imagen
 
 class BlogsList(LoginRequiredMixin, ListView):
     model = blogs
@@ -127,16 +142,28 @@ class BlogsList(LoginRequiredMixin, ListView):
 
 @login_required
 def VerBlogs(request, id):
-    blog=blogs.objects.get(id=id)
-    if request.method=="POST":
-        form=FormsCrearBlogs(request.POST)
-        informacion=form.cleaned_data
-        imagen=informacion["imagen"]
-    
-
-    
-    
+    blog=blogs.objects.get(id=id)  
+    lista=blogs.objects.filter(id=id)
+    if len(lista)!=0:
+        imagen=lista[0].imagen.url
+    else:
+        imagen="/media/avatares/avatarDefault.jpg"
     return render(request, "VerBlogs.html", {"blog":blog, "imagen":imagen})
 
-
+def aboutme(request):
+    return render(request, "aboutme.html")
+@login_required
+def chat(request):
+    usuario = request.user
+    Nombre = usuario.username
+    #user = get_user(id=2)
+    Todos_los_usuarios = get_user_model().objects.all()
+    contexto = {'allusers': Todos_los_usuarios}
     
+    return render(request, "ChatDeMensajeria/chat.html", {"nombre":Nombre}, contexto)
+
+def prueba(request):
+    Todos_los_usuarios = get_user_model().objects.all()
+    
+    return render(request, "ChatDeMensajeria/prubea.html", {"contexto":Todos_los_usuarios})
+   

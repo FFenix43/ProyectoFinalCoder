@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+<h1>Chat de mensajeria</h1>
+{% endblock %}
+
+
+{% block content %}
+{{ contexto }}
+{{ nombre2 }}
+{% for usuario in contexto %}
+<h3> {{ usuario.username }}</h3>
+{% endfor %}
+
+
+{{ mensaje }}
+{% endblock %}

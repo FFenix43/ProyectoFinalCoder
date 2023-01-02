@@ -36,3 +36,8 @@ class FormsCrearBlogs(forms.Form):
     imagen=forms.ImageField(label="imagen")
     parrafo=forms.CharField(widget=forms.Textarea)
 
+class mensaje(forms.Form):
+    mensaje=forms.CharField(widget=forms.Textarea)
+
+    class Meta:
+        model = User

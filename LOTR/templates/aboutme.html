@@ -1,12 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About me</title>
-</head>
-<body>
-    <h1>About Me</h1>
-</body>
-</html>
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+<h1>AboutMe</h1>
+{% endblock %}
+
+
+{% block content %}
+<p>
+    Mi nombre es Tomas Agostino Alvarenga, soy tecnico electronico. Descrubi que me gusta la programacion cuando empece a programar en C para controlar microcontroladores para mi colegio. Unos años despues me presentaron C# en el cual pude descubrir mi pasion por programar.
+    En el mismo año para un proyecto del colegio tuve que usar python para un codigo muy sencillo, pero investigue todo lo que se podria lograr con el lenguaje. Entonces me puse como objetivo aprender y especializarme en dicho lenguaje.
+
+    Entonces ahi encontre el curso de python en coder-house y ahi comenzo mi aprendizaje en python 
+
+    Informacion de contacto:
+        Mail : tomalvarengam@gmail.com
+        telefono : +54 9 1134646978 
+</p>
+
+{% endblock %}
